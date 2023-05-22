@@ -6,12 +6,12 @@ library(dplyr)
 # environment
 options(scipen = 999)
 
-# file uploads
+
+######################## file uploads ############
 
 csv_file <- "All.csv"
 # Read the CSV file into a dataframe
 All <- read.csv(csv_file, sep =";")
-
 
 csv_file <- "Asian.csv"
 # Read the CSV file into a dataframe
@@ -50,6 +50,7 @@ csv_file <- "Other.csv"
 Other <- read.csv(csv_file, sep =";")
 
 
+
 ############# UI ###################
 shinyApp(
   ui = 
@@ -66,7 +67,7 @@ shinyApp(
             font-weight: bold;
             text-align: center;
             margin-top: 20px;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
           }
           
           .app-subtitle {
@@ -74,17 +75,22 @@ shinyApp(
             font-weight: bold;
             text-align: center;
             margin-top: 1px;
-            margin-bottom: 10px;
-                    }
+            margin-bottom: 2px;
+          }
+                    
+          .blue-text {
+          color: blue;
+          }
           
         ")
         )
       ),
       tags$div(class = "app-title", "RBC Donor Phenotype Prediction "),
       tags$div(class = "app-subtitle", "Preliminary version. From data by Tordon et. al presented at CSTM 2022"),
-      tags$div(class = "app-subtitle", "E: s.raza@utoronto.ca T: @RazaSN"),
+      tags$div(class = "app-subtitle", "E: s.raza@utoronto.ca", tags$span(class="blue-text","T: @RazaSN")),
       
       actionButton("reset_btn", "Reset"),
+      actionButton("refresh_btn", "Refresh"),
       
       
       
@@ -103,7 +109,9 @@ shinyApp(
     ),
   
   
-  ########################## server starts here #################################
+  
+  
+########################## server starts here #################################
   
   server = 
     shinyServer(function(input, output, session){
@@ -114,7 +122,6 @@ shinyApp(
       Data <- reactiveValues(Info = NULL)
       c_prob <- reactiveValues(value = 1)
       reactive_string <- reactiveVal()
-      
 
       
       # One Observer to Rule Them All (evil cackle)
@@ -134,6 +141,7 @@ shinyApp(
         #this line gives a unique name to the buttons
         
         input_btn <- paste0(input$data_source, "btn_", seq_len(nrow(display_table())))
+
         lapply(input_btn,
                function(x){
                  observeEvent(
@@ -154,10 +162,13 @@ shinyApp(
 
                      reactive_string(paste(reactive_string(), Data$Info$Antigen, " "))
                      
-                     print ( Data$Info)
+                     #print ( Data$Info)
                      
-                     print (input_btn)
-
+                     #print (input_btn)
+                     
+                     
+                     
+                     
                      
                      
                    }
@@ -177,7 +188,6 @@ shinyApp(
       display_table <- 
         
         reactive({
-          
           
           tbl <- 
             get(input$data_source) %>% 
@@ -204,12 +214,12 @@ shinyApp(
                                    },
                                    character(1)))
           
-          
 
         })
       
       observe({
       
+
       # Render the table with the action buttons
       output$show_table <- 
         
@@ -238,8 +248,6 @@ shinyApp(
         c_prob$value <- 1
         reactive_string("")
         
-      
-      
       })
       
       
@@ -250,10 +258,16 @@ shinyApp(
         reactive_string(NULL)
         #session$reload()
         
-        
-        
       })
       
+      
+      
+      # Reset button event
+      observeEvent(input$refresh_btn, {
+
+        session$reload()
+        
+      })
       
       
       
@@ -282,3 +296,4 @@ shinyApp(
     })
   
 )
+
