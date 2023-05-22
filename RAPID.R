@@ -87,6 +87,16 @@ shinyApp(
           background-color: gray;  /* Set the pressed button color */
           }
           
+        #details {
+          font-family: Helvetica;
+          font-size: 16px;
+          line-height: 1.5;
+          background-color: white;
+          border: 1px solid darkgray;
+          padding: 10px;
+          margin-top: 10px;
+        }
+          
         ")
         )
       ),
@@ -96,8 +106,7 @@ shinyApp(
       
       actionButton("reset_btn", "Reset"),
       actionButton("refresh_btn", "Refresh"),
-      
-      
+    
       
       verbatimTextOutput("details"),
       fluidRow(
