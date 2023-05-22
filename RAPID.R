@@ -336,9 +336,9 @@ shinyApp(
           
           donors <- round(1/c_prob$value,2)
           
-          antigen_rec <- paste("Antigen Negativity Selected: ", reactive_string())
+          antigen_rec <- paste0("Antigen Negativity Selected: ", reactive_string())
           
-          antigen_info <- paste("Estimated Donors:", round(c_prob$value*100,4), "% or ", "1 in", donors, "donors")
+          antigen_info <- paste0("Estimated Donors: ", round(c_prob$value*100,4), "% or ", "1 in ", donors, " donors")
   
           paste(antigen_rec, antigen_info, sep="\n")
           
