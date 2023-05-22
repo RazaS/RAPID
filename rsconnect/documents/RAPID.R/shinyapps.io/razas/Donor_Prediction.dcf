@@ -1,0 +1,13 @@
+name: Donor_Prediction
+title: Donor_Prediction
+username:
+account: razas
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 9153386
+bundleId: 7248374
+url: https://razas.shinyapps.io/Donor_Prediction/
+when: 1684768134.53638
+lastSyncTime: 1684768134.53639
+asMultiple: FALSE
+asStatic: FALSE

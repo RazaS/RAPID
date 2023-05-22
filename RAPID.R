@@ -5,7 +5,7 @@ library(dplyr)
 
 # environment
 options(scipen = 999)
-
+counter <- reactiveVal(0) #to generate new button names
 
 ######################## file uploads ############
 
@@ -140,7 +140,7 @@ shinyApp(
 
         #this line gives a unique name to the buttons
         
-        input_btn <- paste0(input$data_source, "btn_", seq_len(nrow(display_table())))
+        input_btn <- paste0(input$data_source,counter(), "btn_", seq_len(nrow(display_table())))
 
         lapply(input_btn,
                function(x){
@@ -153,7 +153,7 @@ shinyApp(
                      # print (sub(paste(input$data_source,"btn_"), "", x))
                      
                      #this line identifies the button to pull its data from display table
-                     i <- as.numeric(sub(paste0(input$data_source,"btn_"), "", x))
+                     i <- as.numeric(sub(paste0(input$data_source,counter(),"btn_"), "", x))
                      Data$Info <- display_table()[i, -length(display_table())]
                      
 
@@ -208,7 +208,7 @@ shinyApp(
             # Add the action buttons as the last column
             mutate(Select = vapply(row_number(),
                                    function(i){
-                                     actionButton(inputId = paste0(input$data_source, "btn_", i),
+                                     actionButton(inputId = paste0(input$data_source,counter(), "btn_", i),
                                                   label = "Select") %>% 
                                        as.character()
                                    },
@@ -254,12 +254,27 @@ shinyApp(
       
       # Reset button event
       observeEvent(input$reset_btn, {
-        c_prob$value <- 1
-        reactive_string(NULL)
+
+        reset_all()
+        
+        
         #session$reload()
         
       })
       
+      reset_all <- function() {
+        c_prob$value <- 1
+        reactive_string(NULL)
+        
+      }
+      
+      observeEvent(input$data_source, {
+        # Code to execute when the value of input$data_source changes
+        # Add your monitoring logic here
+        reset_all()
+        counter(counter()+1)
+
+      })
       
       
       # Reset button event
