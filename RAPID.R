@@ -82,6 +82,11 @@ shinyApp(
           color: blue;
           }
           
+
+          .pressed-color {
+          background-color: gray;  /* Set the pressed button color */
+          }
+          
         ")
         )
       ),
@@ -122,7 +127,8 @@ shinyApp(
       Data <- reactiveValues(Info = NULL)
       c_prob <- reactiveValues(value = 1)
       reactive_string <- reactiveVal()
-
+      pressed_buttons <- reactiveVal()
+      
       
       # One Observer to Rule Them All (evil cackle)
       # Update the Data$Info value.
@@ -156,21 +162,48 @@ shinyApp(
                      i <- as.numeric(sub(paste0(input$data_source,counter(),"btn_"), "", x))
                      Data$Info <- display_table()[i, -length(display_table())]
                      
-
-                     c_prob$value <-  (100-Data$Info$Frequency)*c_prob$value/100
+                     new_label <- "Selected"  # Set the new label for the button
+                     updateActionButton(session, x, label = new_label)
+                     
+                     pressed_buttons(c(pressed_buttons(), x)) 
+                     #keep track of pressed buttons to reset  them later
+                     
+                     
+                    if (length(reactive_string())>0){ 
+                      #run only if reactive string isn't empty, to avoid null errors
                        
-
-                     reactive_string(paste(reactive_string(), Data$Info$Antigen, " "))
+                      if (!grepl(paste0(Data$Info$Antigen,"-"), reactive_string())) { 
+                        #checks if an antigen has been used before, if not, uses it 
+                        
+                        
+                        c_prob$value <-  (100-Data$Info$Frequency)*c_prob$value/100
+                        
+                        print (reactive_string())
+                        print (Data$Info$Antigen)
+                        
+                        reactive_string(paste0(reactive_string(), Data$Info$Antigen, "- "))
+                        
+                      }
+                      
+                    }
+                     
+                     else { 
+                     
+                     
+                     c_prob$value <-  (100-Data$Info$Frequency)*c_prob$value/100
+                     
+                     print (reactive_string())
+                     print (Data$Info$Antigen)
+                     
+                     reactive_string(paste0(reactive_string(), Data$Info$Antigen, "- "))
+                     
+                     }
                      
                      #print ( Data$Info)
                      
                      #print (input_btn)
                      
-                     
-                     
-                     
-                     
-                     
+
                    }
                    
                  )
@@ -266,6 +299,14 @@ shinyApp(
         c_prob$value <- 1
         reactive_string(NULL)
         
+        for (i in pressed_buttons()) {
+          new_label <- "Select"  # Set the new label for the button
+          updateActionButton(session, i, label = new_label)
+          
+        }
+
+        
+
       }
       
       observeEvent(input$data_source, {
