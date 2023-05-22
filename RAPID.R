@@ -82,6 +82,10 @@ shinyApp(
           color: blue;
           }
           
+          .red-text {
+          color: darkred;
+          }
+          
 
           .pressed-color {
           background-color: gray;  /* Set the pressed button color */
@@ -101,6 +105,9 @@ shinyApp(
         )
       ),
       tags$div(class = "app-title", "RBC Donor Phenotype Prediction "),
+      
+      tags$div(tags$span(class="red-text","RAPID Tool:"),class = "app-subtitle", "Red cell Availability Prediction through Phenotype Identification and Donor statistics"),
+      
       tags$div(class = "app-subtitle", "Preliminary version. From data by Tordon et. al presented at CSTM 2022"),
       tags$div(class = "app-subtitle", "E: s.raza@utoronto.ca", tags$span(class="blue-text","T: @RazaSN")),
       
@@ -187,8 +194,6 @@ shinyApp(
                         
                         c_prob$value <-  (100-Data$Info$Frequency)*c_prob$value/100
                         
-                        print (reactive_string())
-                        print (Data$Info$Antigen)
                         
                         reactive_string(paste0(reactive_string(), Data$Info$Antigen, "- "))
                         
