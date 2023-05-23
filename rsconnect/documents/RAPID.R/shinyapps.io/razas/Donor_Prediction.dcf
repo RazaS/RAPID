@@ -5,9 +5,10 @@ account: razas
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 9153386
-bundleId: 7248873
+bundleId: 7251163
 url: https://razas.shinyapps.io/Donor_Prediction/
-when: 1684773823.58621
-lastSyncTime: 1684773823.58623
+when: 1684814665.27131
+lastSyncTime: 1684814665.27132
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: .~lock.All.csv#

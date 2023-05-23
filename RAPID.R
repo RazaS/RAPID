@@ -6,20 +6,23 @@ library(dplyr)
 # environment
 options(scipen = 999)
 counter <- reactiveVal(0) #to generate new button names
+options(digits = 5)
+
+
 
 ######################## file uploads ############
 
 csv_file <- "All.csv"
 # Read the CSV file into a dataframe
-All <- read.csv(csv_file, sep =";")
+All <- read.csv(csv_file)
 
 csv_file <- "Asian.csv"
 # Read the CSV file into a dataframe
-Asian <- read.csv(csv_file, sep =";")
+Asian <- read.csv(csv_file)
 
 csv_file <- "Arabic.csv"
 # Read the CSV file into a dataframe
-Arabic <- read.csv(csv_file, sep =";")
+Arabic <- read.csv(csv_file)
 
 csv_file <- "Black.csv"
 # Read the CSV file into a dataframe
@@ -27,27 +30,27 @@ Black <- read.csv(csv_file)
 
 csv_file <- "Latin_American.csv"
 # Read the CSV file into a dataframe
-Latin_American <- read.csv(csv_file, sep =";")
+Latin_American <- read.csv(csv_file)
 
 csv_file <- "South_Asian.csv"
 # Read the CSV file into a dataframe
-South_Asian <- read.csv(csv_file, sep =";")
+South_Asian <- read.csv(csv_file)
 
 csv_file <- "Indigenous.csv"
 # Read the CSV file into a dataframe
-Indigenous <- read.csv(csv_file, sep =";")
+Indigenous <- read.csv(csv_file)
 
 csv_file <- "White.csv"
 # Read the CSV file into a dataframe
-White <- read.csv(csv_file, sep =";")
+White <- read.csv(csv_file)
 
 csv_file <- "Blank.csv"
 # Read the CSV file into a dataframe
-Blank <- read.csv(csv_file, sep =";")
+Blank <- read.csv(csv_file)
 
 csv_file <- "Other.csv"
 # Read the CSV file into a dataframe
-Other <- read.csv(csv_file, sep =";")
+Other <- read.csv(csv_file)
 
 
 
@@ -106,10 +109,12 @@ shinyApp(
       ),
       tags$div(class = "app-title", "RBC Donor Phenotype Prediction "),
       
-      tags$div(tags$span(class="red-text","RAPID Tool:"),class = "app-subtitle", "Red cell Availability Prediction through Phenotype Identification and Donor statistics"),
+      tags$div(tags$span(class="red-text","RAPID Tool:"),class = "app-subtitle", "Red cell Availability Prediction by Phenotype Identification and Donor statistics"),
       
       tags$div(class = "app-subtitle", "Preliminary version. From data by Tordon et. al presented at CSTM 2022"),
-      tags$div(class = "app-subtitle", "E: s.raza@utoronto.ca", tags$span(class="blue-text","T: @RazaSN")),
+      #tags$div(class = "app-subtitle", "E: s.raza@utoronto.ca", tags$span(class="blue-text","T: @RazaSN")),
+      
+      tags$div(class = "app-subtitle", "E: s.raza@utoronto.ca"),
       
       actionButton("reset_btn", "Reset"),
       actionButton("refresh_btn", "Refresh"),
@@ -352,7 +357,7 @@ shinyApp(
           
           antigen_rec <- paste0("Antigen Negativity Selected: ", reactive_string())
           
-          antigen_info <- paste0("Estimated Donors: ", round(c_prob$value*100,4), "% or ", "1 in ", donors, " donors")
+          antigen_info <- paste0("Estimated Donors: ", round(c_prob$value*100,3), "% or ", "1 in ", donors, " donors")
   
           paste(antigen_rec, antigen_info, sep="\n")
           
